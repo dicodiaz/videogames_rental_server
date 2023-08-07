@@ -42,7 +42,5 @@ module VideogamesRentalServer
     # Required for all session management (regardless of session_store)
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
-
-    # Rails.application.config.session_store :cookie_store, key: ‘_your_app_session’, expire_after: 14.days
   end
 end
