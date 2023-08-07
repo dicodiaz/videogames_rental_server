@@ -53,3 +53,5 @@ group :development do
 
   gem 'solargraph'
 end
+
+gem 'devise'
