@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_08_012305) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_08_015310) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,6 +18,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_08_012305) do
     t.string "jti", null: false
     t.datetime "exp", null: false
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
+  end
+
+  create_table "reservations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "videogame_id", null: false
+    t.integer "days", null: false
+    t.decimal "total_price", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_reservations_on_user_id"
+    t.index ["videogame_id"], name: "index_reservations_on_videogame_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -35,4 +46,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_08_012305) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "videogames", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "photo", null: false
+    t.text "description", null: false
+    t.decimal "price_per_day", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "reservations", "users"
+  add_foreign_key "reservations", "videogames"
 end
