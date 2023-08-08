@@ -1,9 +1,10 @@
 class VideogamesController < ApplicationController
   before_action :set_videogame, only: %i[show update destroy]
+  before_action :authenticate_user!, except: %i[index show]
 
   # GET /videogames
   def index
-    @videogames = Videogame.all
+    @videogames = Videogame.all.order(updated_at: :desc)
 
     render json: @videogames
   end
@@ -11,7 +12,7 @@ class VideogamesController < ApplicationController
   # GET /videogames/1
   def show
     if @videogame
-      render json: VideogameSerializer.new(@videogame).serializable_hash[:data][:attributes]
+      render json: VideogameSerializer.new(@videogame).serializable_hash[:data]
     else
       render json: { message: 'Videogame not found' }, status: :not_found
     end
@@ -19,10 +20,12 @@ class VideogamesController < ApplicationController
 
   # POST /videogames
   def create
+    return render json: { message: 'Unauthorized' }, status: :unauthorized unless can? :create, Videogame
+
     @videogame = Videogame.new(videogame_params)
 
     if @videogame.save
-      render json: VideogameSerializer.new(@videogame).serializable_hash[:data][:attributes], status: :created,
+      render json: VideogameSerializer.new(@videogame).serializable_hash[:data], status: :created,
              location: @videogame
     else
       render json: { message: @videogame.errors.full_messages.to_sentence.prepend('Error(s): ') },
@@ -32,10 +35,11 @@ class VideogamesController < ApplicationController
 
   # PATCH/PUT /videogames/1
   def update
+    return render json: { message: 'Unauthorized' }, status: :unauthorized unless can? :update, Videogame
     return render json: { message: 'Videogame not found' }, status: :not_found unless @videogame
 
     if @videogame.update(videogame_params)
-      render json: VideogameSerializer.new(@videogame).serializable_hash[:data][:attributes]
+      render json: VideogameSerializer.new(@videogame).serializable_hash[:data]
     else
       render json: { message: @videogame.errors.full_messages.to_sentence.prepend('Error(s): ') },
              status: :unprocessable_entity
@@ -44,6 +48,8 @@ class VideogamesController < ApplicationController
 
   # DELETE /videogames/1
   def destroy
+    return render json: { message: 'Unauthorized' }, status: :unauthorized unless can? :destroy, Videogame
+
     if @videogame
       @videogame.destroy
       render json: { message: 'Videogame deleted' }, status: :ok
