@@ -4,7 +4,7 @@ class ReservationsController < ApplicationController
 
   # GET /reservations
   def index
-    @reservations = Reservation.includes([:videogame]).where(user: current_user)
+    @reservations = current_user.reservations.includes([:videogame]).order(updated_at: :desc)
 
     render json: @reservations.map { |reservation| ReservationSerializer.new(reservation).serializable_hash[:data] }
   end
