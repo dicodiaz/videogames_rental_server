@@ -12,4 +12,5 @@ Rails.application.routes.draw do
                registrations: 'users/registrations'
              }
   resources :videogames
+  resources :reservations
 end
