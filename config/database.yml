@@ -84,4 +84,4 @@ production:
   <<: *default
   database: videogames_rental_server_production
   username: videogames_rental_server
-  password: <%= ENV["VIDEOGAMES_RENTAL_SERVER_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
