@@ -30,3 +30,13 @@
 
 # Ignore ENV variables
 /config/env_variables.rb
+
+# Ignore SSL private key
+server.key
+server.pass.key
+
+# Ignore Certificate Signing Request
+server.csr
+
+# Ignore Certificate
+server.crt
