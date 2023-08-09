@@ -11,6 +11,6 @@ Rails.application.routes.draw do
                sessions: 'users/sessions',
                registrations: 'users/registrations'
              }
-  resources :videogames
-  resources :reservations
+  resources :videogames, defaults: { format: :json }
+  resources :reservations, defaults: { format: :json }
 end
