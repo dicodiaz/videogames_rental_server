@@ -5,6 +5,10 @@ class Users::SessionsController < Devise::SessionsController
     super { @logged_out = true }
   end
 
+  def verify_signed_out_user
+    respond_to_on_destroy unless user_signed_in?
+  end
+
   private
 
   def respond_with(resource, _opts = {})
