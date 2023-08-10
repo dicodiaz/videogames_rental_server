@@ -14,7 +14,7 @@ class ReservationsController < ApplicationController
     if @reservation
       render json: ReservationSerializer.new(@reservation).serializable_hash[:data]
     else
-      render json: { message: 'Reservation not found' }, status: :not_found
+      render json: { error: 'Reservation not found' }, status: :not_found
     end
   end
 
@@ -26,20 +26,18 @@ class ReservationsController < ApplicationController
       render json: ReservationSerializer.new(@reservation).serializable_hash[:data], status: :created,
              location: @reservation
     else
-      render json: { message: @reservation.errors.full_messages.to_sentence.prepend('Error(s): ') },
-             status: :unprocessable_entity
+      render json: { error: @reservation.errors.full_messages.to_sentence }, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /reservations/1
   def update
-    return render json: { message: 'Reservation not found' }, status: :not_found unless @reservation
+    return render json: { error: 'Reservation not found' }, status: :not_found unless @reservation
 
     if @reservation.update(reservation_params)
       render json: ReservationSerializer.new(@reservation).serializable_hash[:data]
     else
-      render json: { message: @reservation.errors.full_messages.to_sentence.prepend('Error(s): ') },
-             status: :unprocessable_entity
+      render json: { error: @reservation.errors.full_messages.to_sentence }, status: :unprocessable_entity
     end
   end
 
@@ -49,7 +47,7 @@ class ReservationsController < ApplicationController
       @reservation.destroy
       render json: { message: 'Reservation deleted' }, status: :ok
     else
-      render json: { message: 'Reservation not found' }, status: :not_found
+      render json: { error: 'Reservation not found' }, status: :not_found
     end
   end
 

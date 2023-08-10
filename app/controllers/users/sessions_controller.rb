@@ -19,7 +19,7 @@ class Users::SessionsController < Devise::SessionsController
     if @logged_out
       render json: { message: 'Logged out successfully.' }, status: :ok
     else
-      render json: { message: "Couldn't find an active session" }, status: :unauthorized
+      render json: { error: "Couldn't find an active session" }, status: :unauthorized
     end
   end
 end

@@ -14,13 +14,13 @@ class VideogamesController < ApplicationController
     if @videogame
       render json: VideogameSerializer.new(@videogame).serializable_hash[:data]
     else
-      render json: { message: 'Videogame not found' }, status: :not_found
+      render json: { error: 'Videogame not found' }, status: :not_found
     end
   end
 
   # POST /videogames
   def create
-    return render json: { message: 'Unauthorized' }, status: :unauthorized unless can? :create, Videogame
+    return render json: { error: 'Unauthorized' }, status: :unauthorized unless can? :create, Videogame
 
     @videogame = Videogame.new(videogame_params)
 
@@ -28,8 +28,7 @@ class VideogamesController < ApplicationController
       render json: VideogameSerializer.new(@videogame).serializable_hash[:data], status: :created,
              location: @videogame
     else
-      render json: { message: @videogame.errors.full_messages.to_sentence.prepend('Error(s): ') },
-             status: :unprocessable_entity
+      render json: { error: @videogame.errors.full_messages.to_sentence }, status: :unprocessable_entity
     end
   end
 
@@ -41,20 +40,19 @@ class VideogamesController < ApplicationController
     if @videogame.update(videogame_params)
       render json: VideogameSerializer.new(@videogame).serializable_hash[:data]
     else
-      render json: { message: @videogame.errors.full_messages.to_sentence.prepend('Error(s): ') },
-             status: :unprocessable_entity
+      render json: { error: @videogame.errors.full_messages.to_sentence }, status: :unprocessable_entity
     end
   end
 
   # DELETE /videogames/1
   def destroy
-    return render json: { message: 'Unauthorized' }, status: :unauthorized unless can? :destroy, Videogame
+    return render json: { error: 'Unauthorized' }, status: :unauthorized unless can? :destroy, Videogame
 
     if @videogame
       @videogame.destroy
       render json: { message: 'Videogame deleted' }, status: :ok
     else
-      render json: { message: 'Videogame not found' }, status: :not_found
+      render json: { error: 'Videogame not found' }, status: :not_found
     end
   end
 
