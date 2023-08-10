@@ -6,7 +6,7 @@ class VideogamesController < ApplicationController
   def index
     @videogames = Videogame.all.order(updated_at: :desc)
 
-    render json: @videogames
+    render json: @videogames.map { |videogame| VideogameSerializer.new(videogame).serializable_hash[:data] }
   end
 
   # GET /videogames/1
