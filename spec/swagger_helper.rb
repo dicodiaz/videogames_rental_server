@@ -25,11 +25,22 @@ RSpec.configure do |config|
           url: 'https://{defaultHost}',
           variables: {
             defaultHost: {
-              default: 'www.example.com'
+              default: 'www.dicodiaz.live'
             }
           }
         }
-      ]
+      ],
+      components: {
+        securitySchemes: {
+          Bearer: {
+            description: 'JWT key necessary to use API calls',
+            type: :apiKey,
+            name: 'Authorization',
+            in: :header
+          }
+        }
+      },
+      tags: [{ name: :Login }]
     }
   }
 

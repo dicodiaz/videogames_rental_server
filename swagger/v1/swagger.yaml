@@ -1,0 +1,114 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/login":
+    post:
+      summary: log in user
+      tags:
+      - Login
+      parameters: []
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  address:
+                    type: string
+                  email:
+                    type: string
+                  admin:
+                    type: boolean
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+  "/videogames":
+    get:
+      summary: list videogames
+      tags:
+      - Videogames
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create videogame
+      tags:
+      - Videogames
+      responses:
+        '200':
+          description: successful
+  "/videogames/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show videogame
+      tags:
+      - Videogames
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update videogame
+      tags:
+      - Videogames
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update videogame
+      tags:
+      - Videogames
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete videogame
+      tags:
+      - Videogames
+      responses:
+        '200':
+          description: successful
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.dicodiaz.live
+components:
+  securitySchemes:
+    Bearer:
+      description: JWT key necessary to use API calls
+      type: apiKey
+      name: Authorization
+      in: header
+tags:
+- name: Login
