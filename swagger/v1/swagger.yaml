@@ -859,3 +859,5 @@ components:
 tags:
 - name: Session
 - name: Registration
+- name: Videogames
+- name: Reservations

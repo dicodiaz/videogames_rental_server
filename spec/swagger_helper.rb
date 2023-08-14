@@ -48,7 +48,7 @@ RSpec.configure do |config|
           }
         }
       },
-      tags: [{ name: :Session }, { name: :Registration }]
+      tags: [{ name: :Session }, { name: :Registration }, { name: :Videogames }, { name: :Reservations }]
     }
   }
 
