@@ -22,10 +22,18 @@ RSpec.configure do |config|
       paths: {},
       servers: [
         {
-          url: "http#{Rails.env.production? ? 's' : ''}://{defaultHost}",
+          url: 'https://{defaultHost}',
           variables: {
             defaultHost: {
-              default: Rails.env.production? ? 'www.dicodiaz.live' : '127.0.0.1:3000'
+              default: 'www.dicodiaz.live'
+            }
+          }
+        },
+        {
+          url: 'http://{defaultHost}',
+          variables: {
+            defaultHost: {
+              default: '127.0.0.1:3000'
             }
           }
         }
@@ -40,7 +48,7 @@ RSpec.configure do |config|
           }
         }
       },
-      tags: [{ name: :Login }]
+      tags: [{ name: :Session }, { name: :Registration }]
     }
   }
 
