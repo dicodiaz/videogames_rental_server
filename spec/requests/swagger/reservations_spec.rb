@@ -1,9 +1,10 @@
 require 'swagger_helper'
 
-RSpec.describe 'videogames', type: :request do
-  path '/videogames' do
-    get('list videogames') do
-      tags :Videogames
+RSpec.describe 'reservations', type: :request do
+  path '/reservations' do
+    get('list user reservations') do
+      tags :Reservations
+      security [Bearer: []]
       produces 'application/json'
 
       response(200, 'Successful') do
@@ -17,10 +18,20 @@ RSpec.describe 'videogames', type: :request do
                      type: :object,
                      properties: {
                        id: { type: :number },
-                       name: { type: :string },
-                       photo: { type: :string },
-                       description: { type: :string },
-                       price_per_day: { type: :string }
+                       user_id: { type: :number },
+                       days: { type: :number },
+                       total_price: { type: :string },
+                       created_at: { type: :string },
+                       videogame: {
+                         type: :object,
+                         properties: {
+                           id: { type: :number },
+                           name: { type: :string },
+                           photo: { type: :string },
+                           description: { type: :string },
+                           price_per_day: { type: :string }
+                         }
+                       }
                      }
                    }
                  }
@@ -35,25 +46,33 @@ RSpec.describe 'videogames', type: :request do
         end
         run_test!
       end
+
+      response(401, 'Unauthorized - Only users can see their own reservations') do
+        schema type: :object,
+               properties: {
+                 error: { type: :string }
+               }
+
+        run_test!
+      end
     end
 
-    post('create videogame') do
-      tags :Videogames
+    post('create reservation') do
+      tags :Reservations
       security [Bearer: []]
       consumes 'application/json'
       produces 'application/json'
-      parameter name: :videogame, in: :body, schema: {
+      parameter name: :reservation, in: :body, schema: {
         type: :object,
         properties: {
-          videogame: {
+          reservation: {
             type: :object,
             properties: {
-              name: { type: :string },
-              photo: { type: :string },
-              description: { type: :string },
-              price_per_day: { type: :number }
+              videogame_id: { type: :number },
+              days: { type: :number },
+              total_price: { type: :number }
             },
-            required: %w[name photo description price_per_day]
+            required: %w[videogame_id days total_price]
           }
         }
       }
@@ -67,17 +86,25 @@ RSpec.describe 'videogames', type: :request do
                    type: :object,
                    properties: {
                      id: { type: :number },
-                     name: { type: :string },
-                     photo: { type: :string },
-                     description: { type: :string },
-                     price_per_day: { type: :string }
+                     user_id: { type: :number },
+                     days: { type: :number },
+                     total_price: { type: :string },
+                     created_at: { type: :string },
+                     videogame: {
+                       type: :object,
+                       properties: {
+                         id: { type: :number },
+                         name: { type: :string },
+                         photo: { type: :string },
+                         description: { type: :string },
+                         price_per_day: { type: :string }
+                       }
+                     }
                    }
                  }
                }
 
-        let(:videogame) do
-          { videogame: { name: 'test', photo: 'photo', description: 'description', price_per_day: 1.0 } }
-        end
+        let(:reservation) { { reservation: { videogame_id: 1, days: 1, total_price: 1.0 } } }
         after do |example|
           example.metadata[:response][:content] = {
             'application/json' => {
@@ -88,15 +115,13 @@ RSpec.describe 'videogames', type: :request do
         run_test!
       end
 
-      response(401, 'Unauthorized - Only admins can create videogames') do
+      response(401, 'Unauthorized - Only users can create their own reservations') do
         schema type: :object,
                properties: {
                  error: { type: :string }
                }
 
-        let(:videogame) do
-          { videogame: { name: 'test', photo: 'photo', description: 'description', price_per_day: 1.0 } }
-        end
+        let(:reservation) { { reservation: { videogame_id: 1, days: 1, total_price: 1.0 } } }
         run_test!
       end
 
@@ -106,20 +131,17 @@ RSpec.describe 'videogames', type: :request do
                  error: { type: :string }
                }
 
-        let(:videogame) do
-          { videogame: { name: 'test', photo: 'photo', description: 'description', price_per_day: 1.0 } }
-        end
+        let(:reservation) { { reservation: { videogame_id: 1, days: 1 } } }
         run_test!
       end
     end
   end
 
-  path '/videogames/{id}' do
+  path '/reservations/{id}' do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
-    get('show videogame') do
-      tags :Videogames
-      produces 'application/json'
+    get('show reservation') do
+      tags :Reservations
 
       response(200, 'Successful') do
         schema type: :object,
@@ -130,10 +152,20 @@ RSpec.describe 'videogames', type: :request do
                    type: :object,
                    properties: {
                      id: { type: :number },
-                     name: { type: :string },
-                     photo: { type: :string },
-                     description: { type: :string },
-                     price_per_day: { type: :string }
+                     user_id: { type: :number },
+                     days: { type: :number },
+                     total_price: { type: :string },
+                     created_at: { type: :string },
+                     videogame: {
+                       type: :object,
+                       properties: {
+                         id: { type: :number },
+                         name: { type: :string },
+                         photo: { type: :string },
+                         description: { type: :string },
+                         price_per_day: { type: :string }
+                       }
+                     }
                    }
                  }
                }
@@ -146,6 +178,16 @@ RSpec.describe 'videogames', type: :request do
             }
           }
         end
+        run_test!
+      end
+
+      response(401, 'Unauthorized - Only users can see their own reservations') do
+        schema type: :object,
+               properties: {
+                 error: { type: :string }
+               }
+
+        let(:id) { '1' }
         run_test!
       end
 
@@ -160,21 +202,20 @@ RSpec.describe 'videogames', type: :request do
       end
     end
 
-    patch('update videogame') do
-      tags :Videogames
+    patch('update reservation') do
+      tags :Reservations
       security [Bearer: []]
       consumes 'application/json'
       produces 'application/json'
-      parameter name: :videogame, in: :body, schema: {
+      parameter name: :reservation, in: :body, schema: {
         type: :object,
         properties: {
-          videogame: {
+          reservation: {
             type: :object,
             properties: {
-              name: { type: :string },
-              photo: { type: :string },
-              description: { type: :string },
-              price_per_day: { type: :number }
+              videogame_id: { type: :number },
+              days: { type: :number },
+              total_price: { type: :number }
             }
           }
         }
@@ -189,10 +230,20 @@ RSpec.describe 'videogames', type: :request do
                    type: :object,
                    properties: {
                      id: { type: :number },
-                     name: { type: :string },
-                     photo: { type: :string },
-                     description: { type: :string },
-                     price_per_day: { type: :string }
+                     user_id: { type: :number },
+                     days: { type: :number },
+                     total_price: { type: :string },
+                     created_at: { type: :string },
+                     videogame: {
+                       type: :object,
+                       properties: {
+                         id: { type: :number },
+                         name: { type: :string },
+                         photo: { type: :string },
+                         description: { type: :string },
+                         price_per_day: { type: :string }
+                       }
+                     }
                    }
                  }
                }
@@ -208,7 +259,7 @@ RSpec.describe 'videogames', type: :request do
         run_test!
       end
 
-      response(401, 'Unauthorized - Only admins can update videogames') do
+      response(401, 'Unauthorized - Only users can see their own reservations') do
         schema type: :object,
                properties: {
                  error: { type: :string }
@@ -239,21 +290,20 @@ RSpec.describe 'videogames', type: :request do
       end
     end
 
-    put('update videogame') do
-      tags :Videogames
+    put('update reservation') do
+      tags :Reservations
       security [Bearer: []]
       consumes 'application/json'
       produces 'application/json'
-      parameter name: :videogame, in: :body, schema: {
+      parameter name: :reservation, in: :body, schema: {
         type: :object,
         properties: {
-          videogame: {
+          reservation: {
             type: :object,
             properties: {
-              name: { type: :string },
-              photo: { type: :string },
-              description: { type: :string },
-              price_per_day: { type: :number }
+              videogame_id: { type: :number },
+              days: { type: :number },
+              total_price: { type: :number }
             }
           }
         }
@@ -268,10 +318,20 @@ RSpec.describe 'videogames', type: :request do
                    type: :object,
                    properties: {
                      id: { type: :number },
-                     name: { type: :string },
-                     photo: { type: :string },
-                     description: { type: :string },
-                     price_per_day: { type: :string }
+                     user_id: { type: :number },
+                     days: { type: :number },
+                     total_price: { type: :string },
+                     created_at: { type: :string },
+                     videogame: {
+                       type: :object,
+                       properties: {
+                         id: { type: :number },
+                         name: { type: :string },
+                         photo: { type: :string },
+                         description: { type: :string },
+                         price_per_day: { type: :string }
+                       }
+                     }
                    }
                  }
                }
@@ -287,7 +347,7 @@ RSpec.describe 'videogames', type: :request do
         run_test!
       end
 
-      response(401, 'Unauthorized - Only admins can update videogames') do
+      response(401, 'Unauthorized - Only users can see their own reservations') do
         schema type: :object,
                properties: {
                  error: { type: :string }
@@ -318,8 +378,8 @@ RSpec.describe 'videogames', type: :request do
       end
     end
 
-    delete('delete videogame') do
-      tags :Videogames
+    delete('delete reservation') do
+      tags :Reservations
       security [Bearer: []]
       produces 'application/json'
 
@@ -340,7 +400,7 @@ RSpec.describe 'videogames', type: :request do
         run_test!
       end
 
-      response(401, 'Unauthorized - Only admins can delete videogames') do
+      response(401, 'Unauthorized - Only users can see their own reservations') do
         schema type: :object,
                properties: {
                  error: { type: :string }

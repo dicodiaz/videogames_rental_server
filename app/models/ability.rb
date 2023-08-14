@@ -5,7 +5,7 @@ class Ability
     can :read, Videogame
     return unless user.present?
 
-    can :read, :all
+    can(:manage, Reservation, user:)
     return unless user.admin?
 
     can :manage, :all

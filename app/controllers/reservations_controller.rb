@@ -11,6 +11,8 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/1
   def show
+    return render json: { error: 'Unauthorized' }, status: :unauthorized unless can? :read, @reservation
+
     if @reservation
       render json: ReservationSerializer.new(@reservation).serializable_hash[:data]
     else
@@ -32,6 +34,7 @@ class ReservationsController < ApplicationController
 
   # PATCH/PUT /reservations/1
   def update
+    return render json: { error: 'Unauthorized' }, status: :unauthorized unless can? :update, @reservation
     return render json: { error: 'Reservation not found' }, status: :not_found unless @reservation
 
     if @reservation.update(reservation_params)
@@ -43,6 +46,8 @@ class ReservationsController < ApplicationController
 
   # DELETE /reservations/1
   def destroy
+    return render json: { error: 'Unauthorized' }, status: :unauthorized unless can? :update, @reservation
+
     if @reservation
       @reservation.destroy
       render json: { message: 'Reservation deleted' }, status: :ok
