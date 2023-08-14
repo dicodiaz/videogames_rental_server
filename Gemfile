@@ -43,8 +43,6 @@ group :development, :test do
   gem 'rspec-rails'
 
   gem 'bullet'
-
-  gem 'rswag'
 end
 
 group :development do
@@ -63,3 +61,5 @@ gem 'devise-jwt'
 gem 'cancancan'
 
 gem 'fast_jsonapi'
+
+gem 'rswag'
