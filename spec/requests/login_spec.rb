@@ -9,8 +9,13 @@ RSpec.describe 'login', type: :request do
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
-          email: { type: :string },
-          password: { type: :string }
+          user: {
+            type: :object,
+            properties: {
+              email: { type: :string },
+              password: { type: :string }
+            }
+          }
         }
       }
 
