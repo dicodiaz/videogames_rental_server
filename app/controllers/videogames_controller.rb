@@ -34,8 +34,8 @@ class VideogamesController < ApplicationController
 
   # PATCH/PUT /videogames/1
   def update
-    return render json: { message: 'Unauthorized' }, status: :unauthorized unless can? :update, Videogame
-    return render json: { message: 'Videogame not found' }, status: :not_found unless @videogame
+    return render json: { error: 'Unauthorized' }, status: :unauthorized unless can? :update, Videogame
+    return render json: { error: 'Videogame not found' }, status: :not_found unless @videogame
 
     if @videogame.update(videogame_params)
       render json: VideogameSerializer.new(@videogame).serializable_hash[:data]

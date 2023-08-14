@@ -1,5 +1,0 @@
-{
-  "scripts": {
-    "postdeploy": "rake rswag:specs:swaggerize"
-  }
-}

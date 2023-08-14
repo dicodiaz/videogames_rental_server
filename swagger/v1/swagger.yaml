@@ -4,11 +4,69 @@ info:
   title: API V1
   version: v1
 paths:
+  "/signup":
+    post:
+      summary: sign up user
+      tags:
+      - Registration
+      parameters: []
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  address:
+                    type: string
+                  email:
+                    type: string
+                  admin:
+                    type: boolean
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    address:
+                      type: string
+                    email:
+                      type: string
+                    password:
+                      type: string
+                    admin:
+                      type: boolean
+                      default: false
+                  required:
+                  - name
+                  - address
+                  - email
+                  - password
   "/login":
     post:
       summary: log in user
       tags:
-      - Login
+      - Session
       parameters: []
       responses:
         '200':
@@ -48,8 +106,39 @@ paths:
                   properties:
                     email:
                       type: string
+                      default: admin@mail.com
                     password:
                       type: string
+                      default: test123
+                  required:
+                  - email
+                  - password
+  "/logout":
+    delete:
+      summary: log out user
+      tags:
+      - Session
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
   "/videogames":
     get:
       summary: list videogames
@@ -57,14 +146,101 @@ paths:
       - Videogames
       responses:
         '200':
-          description: successful
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    attributes:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        name:
+                          type: string
+                        photo:
+                          type: string
+                        description:
+                          type: string
+                        price_per_day:
+                          type: string
     post:
       summary: create videogame
       tags:
       - Videogames
+      parameters: []
       responses:
-        '200':
-          description: successful
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  attributes:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      photo:
+                        type: string
+                      description:
+                        type: string
+                      price_per_day:
+                        type: string
+        '401':
+          description: Unauthorized - Only admins can create videogames
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                videogame:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    photo:
+                      type: string
+                    description:
+                      type: string
+                    price_per_day:
+                      type: number
+                  required:
+                  - name
+                  - photo
+                  - description
+                  - price_per_day
   "/videogames/{id}":
     parameters:
     - name: id
@@ -79,29 +255,223 @@ paths:
       - Videogames
       responses:
         '200':
-          description: successful
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  attributes:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      photo:
+                        type: string
+                      description:
+                        type: string
+                      price_per_day:
+                        type: string
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     patch:
       summary: update videogame
       tags:
       - Videogames
+      parameters: []
       responses:
         '200':
-          description: successful
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  attributes:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      photo:
+                        type: string
+                      description:
+                        type: string
+                      price_per_day:
+                        type: string
+        '401':
+          description: Unauthorized - Only admins can update videogames
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                videogame:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    photo:
+                      type: string
+                    description:
+                      type: string
+                    price_per_day:
+                      type: number
     put:
       summary: update videogame
       tags:
       - Videogames
+      parameters: []
       responses:
         '200':
-          description: successful
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  attributes:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      photo:
+                        type: string
+                      description:
+                        type: string
+                      price_per_day:
+                        type: string
+        '401':
+          description: Unauthorized - Only admins can update videogames
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                videogame:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    photo:
+                      type: string
+                    description:
+                      type: string
+                    price_per_day:
+                      type: number
     delete:
       summary: delete videogame
       tags:
       - Videogames
       responses:
         '200':
-          description: successful
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized - Only admins can delete videogames
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
 servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.dicodiaz.live
 - url: http://{defaultHost}
   variables:
     defaultHost:
@@ -114,4 +484,5 @@ components:
       name: Authorization
       in: header
 tags:
-- name: Login
+- name: Session
+- name: Registration
