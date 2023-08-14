@@ -43,6 +43,8 @@ group :development, :test do
   gem 'rspec-rails'
 
   gem 'bullet'
+
+  gem 'rswag'
 end
 
 group :development do

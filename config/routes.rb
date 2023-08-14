@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
+  root to: redirect('/api-docs')
   devise_for :users,
              defaults: { format: :json },
              path: '',
