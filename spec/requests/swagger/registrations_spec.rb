@@ -1,9 +1,9 @@
 require 'swagger_helper'
 
-RSpec.describe 'login', type: :request do
-  path '/login' do
-    post('log in user') do
-      tags :Login
+RSpec.describe 'registrations', type: :request do
+  path '/signup' do
+    post('sign up user') do
+      tags :Registration
       consumes 'application/json'
       produces 'application/json'
       parameter name: :user, in: :body, schema: {
@@ -12,9 +12,13 @@ RSpec.describe 'login', type: :request do
           user: {
             type: :object,
             properties: {
+              name: { type: :string },
+              address: { type: :string },
               email: { type: :string },
-              password: { type: :string }
-            }
+              password: { type: :string },
+              admin: { type: :boolean, default: false }
+            },
+            required: %w[name address email password]
           }
         }
       }
@@ -30,9 +34,8 @@ RSpec.describe 'login', type: :request do
                }
 
         let(:user) do
-          user = User.create(name: 'user name', address: 'user address', email: 'user_email@mail.com',
-                             password: 'user_password')
-          { email: user.email, password: user.password }
+          { user: { name: 'user name', address: 'user address', email: 'user_email@mail.com',
+                    password: 'user_password' } }
         end
         run_test!
       end
@@ -43,7 +46,10 @@ RSpec.describe 'login', type: :request do
                  error: { type: :string }
                }
 
-        let(:user) { { email: 'user_email@mail.com', password: 'user_password' } }
+        let(:user) do
+          { user: { name: 'user name', address: 'user address', email: 'user_email@mail.com',
+                    password: 'user_password' } }
+        end
         run_test!
       end
     end
