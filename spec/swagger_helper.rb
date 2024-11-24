@@ -25,7 +25,7 @@ RSpec.configure do |config|
           url: 'https://{defaultHost}',
           variables: {
             defaultHost: {
-              default: 'www.dicodiaz.live'
+              default: 'videogames-rental-server-548b6c289583.herokuapp.com'
             }
           }
         },
