@@ -12,7 +12,7 @@ RSpec.describe 'sessions', type: :request do
           user: {
             type: :object,
             properties: {
-              email: { type: :string, default: 'admin@mail.com' },
+              email: { type: :string, default: 'dicodiaz@gmail.com' },
               password: { type: :string, default: 'test123' }
             },
             required: %w[email password]
