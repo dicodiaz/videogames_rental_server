@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.2.2'
+ruby '3.3.6'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.6'
@@ -63,3 +63,5 @@ gem 'cancancan'
 gem 'fast_jsonapi'
 
 gem 'rswag'
+
+gem 'dotenv-rails'

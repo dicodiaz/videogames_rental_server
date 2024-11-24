@@ -29,7 +29,7 @@
 /config/master.key
 
 # Ignore ENV variables
-/config/env_variables.rb
+.env
 
 # Ignore SSL private key
 server.key
@@ -40,3 +40,6 @@ server.csr
 
 # Ignore Certificate
 server.crt
+
+# Ignore random file that is created when running bundle install
+2

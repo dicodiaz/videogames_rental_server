@@ -53,9 +53,7 @@
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- [https://www.dicodiaz.live](https://www.dicodiaz.live)
-
-**Note:** Deployed with Heroku.
+- https://videogames-rental-server-548b6c289583.herokuapp.com/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -67,6 +65,7 @@ To get a local copy up and running, follow these steps.
 
 In order to run this project you need:
 
+- [Install PostgreSQL](https://www.postgresql.org/download/)
 - [Install Ruby](https://www.ruby-lang.org/en/documentation/installation/)
 - Install the [rails gem](https://rubygems.org/gems/rails)
 
@@ -75,49 +74,57 @@ In order to run this project you need:
 Clone this repository to your desired folder:
 
 ```sh
-  cd my-folder
-  git clone git@github.com:dicodiaz/videogames_rental_server.git
-  cd videogames_rental_server
+cd my-folder
+git clone git@github.com:dicodiaz/videogames_rental_server.git
+cd videogames_rental_server
 ```
 
 ### Install
 
-Install this project with:
+1. Install this project with:
 
 ```sh
-  bundle install
+bundle install
 ```
 
-Generate the secret key and copy it:
+**Important note:** If you have the RAILS_MASTER_KEY (found in the Heroku app settings), please skip steps 2 to 4
+
+2. Generate the secret key and copy it:
 
 ```sh
-  rake secret
+rake secret
 ```
 
-Remove the `config/credentials.yml.enc` file and run:
+3. Remove the `config/credentials.yml.enc` file and run:
 
 ```sh
-  EDITOR="code --wait" rails credentials:edit
+EDITOR="code --wait" rails credentials:edit
 ```
 
-Paste the generated secret key in the credentials file as the following line:
+4. Paste the generated secret key in the credentials file as the following line:
 
 ```ruby
-  devise_jwt_secret_key: <your_secret_key>
+devise_jwt_secret_key: <your_secret_key>
 ```
 
-In case you need to, add your database credentials to the `config/database.yml` file under the default section:
+5. In case you need to, add your database credentials to the `config/database.yml` file under the default section:
 
 ```ruby
-  default: &default
-    username: <your_username>
-    password: <your_password>
+default: &default
+  username: <your_username>
+  password: <your_password>
 ```
 
-Execute the following command to setup the database and migrate the tables:
+Or create a _.env_ file to the root folder and add your DATABASE_PASSWORD in it
+
+```
+DATABASE_PASSWORD=<your_password>
+```
+
+6. Execute the following command to setup the database and migrate the tables:
 
 ```sh
-  rails db:setup
+rails db:setup
 ```
 
 ### Usage
@@ -125,7 +132,7 @@ Execute the following command to setup the database and migrate the tables:
 To run the project, execute the following commands:
 
 ```sh
-  rails server
+rails server
 ```
 
 ### Run tests
@@ -133,7 +140,7 @@ To run the project, execute the following commands:
 To run tests, run the following command:
 
 ```sh
-  rspec
+rspec
 ```
 
 ### Build API docs
@@ -141,7 +148,7 @@ To run tests, run the following command:
 To build API docs, run the following command:
 
 ```sh
-  rake rswag:specs:swaggerize PATTERN="spec/requests/swagger/**/*_spec.rb"
+rake rswag:specs:swaggerize PATTERN="spec/requests/swagger/**/*_spec.rb"
 ```
 
 ### Deployment

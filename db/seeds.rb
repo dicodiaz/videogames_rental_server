@@ -4,7 +4,7 @@ Reservation.destroy_all
 
 user1 = User.create(email: 'dicodiaz@gmail.com', password: 'test123', name: 'Dico', address: '123 Main St', admin: true)
 user2 = User.create(email: 'alejandra@example.com', password: 'test123', name: 'Alejandra', address: '123 Main St')
-user3 = User.create(email: 'luis@example.com', password: 'test123', name: 'Dico', address: '123 Main St')
+user3 = User.create(email: 'luis@example.com', password: 'test123', name: 'Luis', address: '123 Main St')
 user4 = User.create(email: 'nicolas@example.com', password: 'test123', name: 'Nicolas', address: '123 Main St')
 user5 = User.create(email: 'david@example.com', password: 'test123', name: 'David', address: '123 Main St')
 
@@ -33,11 +33,11 @@ videogame8 = Videogame.create(name: 'Street Fighter',
                               description: 'Street Fighter is a 1987 arcade game developed by Capcom. It is the first competitive fighting game produced by the company and the inaugural game in the Street Fighter series.',
                               price_per_day: 20.00, photo: 'https://mms.businesswire.com/media/20230122005013/en/1692292/5/p1-1.jpg')
 
-reservation1 = Reservation.create(user_id: user1.id, videogame_id: videogame1.id, days: 3, total_price: 30.00)
-reservation2 = Reservation.create(user_id: user1.id, videogame_id: videogame2.id, days: 2, total_price: 10.00)
-reservation3 = Reservation.create(user_id: user2.id, videogame_id: videogame3.id, days: 1, total_price: 15.00)
-reservation4 = Reservation.create(user_id: user2.id, videogame_id: videogame4.id, days: 4, total_price: 20.00)
-reservation5 = Reservation.create(user_id: user3.id, videogame_id: videogame5.id, days: 5, total_price: 50.00)
-reservation6 = Reservation.create(user_id: user4.id, videogame_id: videogame6.id, days: 2, total_price: 46.00)
-reservation7 = Reservation.create(user_id: user5.id, videogame_id: videogame7.id, days: 3, total_price: 60.00)
-reservation8 = Reservation.create(user_id: user5.id, videogame_id: videogame8.id, days: 1, total_price: 20.00)
+Reservation.create(user_id: user1.id, videogame_id: videogame1.id, days: 3, total_price: 30.00)
+Reservation.create(user_id: user1.id, videogame_id: videogame2.id, days: 2, total_price: 10.00)
+Reservation.create(user_id: user2.id, videogame_id: videogame3.id, days: 1, total_price: 15.00)
+Reservation.create(user_id: user2.id, videogame_id: videogame4.id, days: 4, total_price: 20.00)
+Reservation.create(user_id: user3.id, videogame_id: videogame5.id, days: 5, total_price: 50.00)
+Reservation.create(user_id: user4.id, videogame_id: videogame6.id, days: 2, total_price: 46.00)
+Reservation.create(user_id: user5.id, videogame_id: videogame7.id, days: 3, total_price: 60.00)
+Reservation.create(user_id: user5.id, videogame_id: videogame8.id, days: 1, total_price: 20.00)
