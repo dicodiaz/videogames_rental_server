@@ -82,6 +82,6 @@ test:
 #
 production:
   <<: *default
-  database: <%= ENV['DATABASE_NAME'] %>
-  username: <%= ENV['DATABASE_USERNAME'] %>
+  database: videogames_rental_server_production
+  username: videogames_rental_server
   url: <%= ENV['DATABASE_URL'] %>
